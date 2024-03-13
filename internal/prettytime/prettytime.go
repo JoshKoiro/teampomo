@@ -11,12 +11,7 @@ func PrettyValue(utcStr string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	// Convert UTC time to local time
-	localTime := utcTime.Local()
-
-	// Format the local time to a pretty string (e.g., "3:04pm")
-	prettyTime := localTime.Format("3:04pm")
+	prettyTime := utcTime.Local().Format("3:04pm")
 
 	return prettyTime, nil
 }
