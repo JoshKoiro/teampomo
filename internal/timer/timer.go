@@ -29,14 +29,15 @@ func (t *Timer) Start(key string, duration int) {
 		if time.Now().After(endTime) {
 			//clear the last line from console output
 			fmt.Printf("\033[2K\r")
-			fmt.Println("Pomodoro completed!")
+			c := color.New(color.FgHiGreen)
+			c.Println("\n🍅Pomodoro completed!🍅\n")
 			break
 		} else {
 			remainingTime := endTime.Sub(time.Now()).Truncate(time.Second)
 			minutes := remainingTime / time.Minute
 			seconds := remainingTime % time.Minute / time.Second
 
-			c := color.New(color.FgHiGreen)
+			c := color.New(color.FgHiCyan)
 			c.Printf("\033[2K\rTime remaining: %d m %d sec", minutes, seconds)
 		}
 	}
