@@ -22,7 +22,7 @@ func NewTimer(seconds ...int) *Timer {
 	}
 }
 
-func (t *Timer) Start() {
+func (t *Timer) Start(key string, duration int) {
 	endTime := time.Now().Add(t.Duration)
 
 	for range time.Tick(time.Second) {
@@ -40,4 +40,7 @@ func (t *Timer) Start() {
 			c.Printf("\033[2K\rTime remaining: %d m %d sec", minutes, seconds)
 		}
 	}
+
+	// update the teams status message every minute
+	// TODO
 }
