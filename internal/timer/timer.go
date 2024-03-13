@@ -3,6 +3,8 @@ package timer
 import (
 	"fmt"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 type Timer struct {
@@ -30,10 +32,12 @@ func (t *Timer) Start() {
 			fmt.Println("Pomodoro completed!")
 			break
 		} else {
-			//format the time remaining and return it to the console.
-			//clear only the last printed line from console output
-			//format the time remaining as a clock with minutes and seconds with a : in between them
-			fmt.Printf("\033[2K\rTime remaining: %v", endTime.Sub(time.Now()).Truncate(time.Second))
+			remainingTime := endTime.Sub(time.Now()).Truncate(time.Second)
+			minutes := remainingTime / time.Minute
+			seconds := remainingTime % time.Minute / time.Second
+
+			c := color.New(color.FgHiGreen)
+			c.Printf("\033[2K\rTime remaining: %d m %d sec", minutes, seconds)
 		}
 	}
 }

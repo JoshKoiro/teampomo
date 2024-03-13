@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/JoshKoiro/teampomo/internal/timer"
+	"github.com/fatih/color"
 
 	"github.com/spf13/cobra"
 )
@@ -30,7 +31,8 @@ var StartCmd = &cobra.Command{
 				fmt.Println("Invalid duration. Please specify a valid number of seconds (e.g., '15sec').")
 				return
 			}
-			fmt.Printf("Starting a new Pomodoro session for %d seconds...\n", duration)
+			c := color.New(color.FgHiMagenta)
+			c.Printf("\nStarting a new Pomodoro session for %d seconds...\n\n", duration)
 		} else {
 			durationStr = strings.TrimSpace(durationStr)
 			duration, err = strconv.Atoi(durationStr)
@@ -39,7 +41,8 @@ var StartCmd = &cobra.Command{
 				return
 			}
 			duration *= 60 // Convert minutes to seconds for consistency
-			fmt.Printf("Starting a new Pomodoro session for %d minutes...\n", duration/60)
+			c := color.New(color.FgHiMagenta)
+			c.Printf("Starting a new Pomodoro session for %d minutes...\n", duration/60)
 		}
 
 		pomodoroTimer := timer.NewTimer(duration)
