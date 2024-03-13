@@ -56,7 +56,9 @@ var StartCmd = &cobra.Command{
 			}
 			duration *= 60 // Convert minutes to seconds for consistency
 			c := color.New(color.FgHiMagenta)
-			c.Printf("Starting a new Pomodoro session for %d minutes...\n", duration/60)
+			//clear all console output
+			fmt.Print("\033[2J\033[1;1H")
+			c.Printf("Starting a new Pomodoro session for %d minutes...🍅\n\n", duration/60)
 			endTime = time.Now().Add(time.Duration(duration) * time.Second).UTC().Format("2006-01-02T15:04:05.999Z")
 
 			// get pretty versions of time
@@ -70,24 +72,35 @@ var StartCmd = &cobra.Command{
 			}
 
 			// print start time
+			c = color.New(color.FgHiCyan)
 			c.Printf("Start time: %s\n", startTimePretty)
 			// print end time
-			c.Printf("End time: %s\n", endTimePretty)
+			c.Printf("End time: %s\n\n", endTimePretty)
 
-			// create calendar event
-			teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
+			// set initial status message
+			teamsError := teamsapi.SetStatusMessage(key, "Currently in a Pomodoro session for the next "+strconv.Itoa(duration/60)+" minutes...🍅", endTime)
 			if teamsError != nil {
 				fmt.Println(teamsError)
 			}
-
-			// set initial status message
-			// teamsError = teamsapi.SetStatusMessage(key, "In a Pomodoro session for the next "+strconv.Itoa(duration/60)+" minutes", endTime)
-			// if teamsError != nil {
-			// 	fmt.Println(teamsError)
-			// }
 		}
+
+		// COMMENTED THIS OUT FOR TESTING PURPOSES....
+
+		// create calendar event
+		teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
+		if teamsError != nil {
+			fmt.Println(teamsError)
+		}
+
+		// END OF COMMENTING
 
 		pomodoroTimer := timer.NewTimer(duration)
 		pomodoroTimer.Start(key, duration)
+
+		//clear teams status message
+		teamsError = teamsapi.SetStatusMessage(key, "", "")
+		if teamsError != nil {
+			fmt.Println(teamsError)
+		}
 	},
 }

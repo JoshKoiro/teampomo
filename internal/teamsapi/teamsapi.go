@@ -53,9 +53,6 @@ func GetUserID(key string) (string, error) {
 		return "", fmt.Errorf("error reading response body: %w", err)
 	}
 
-	// see the value of body
-	fmt.Println(string(body))
-
 	// parse response body
 	var id UserIDResponse
 	err = json.Unmarshal(body, &id)
@@ -179,10 +176,6 @@ type StatusRequestBody struct {
 			Content     string `json:"content"`
 			ContentType string `json:"contentType"`
 		} `json:"message"`
-		ExpiryDateTime struct {
-			DateTime string `json:"dateTime"`
-			TimeZone string `json:"timeZone"`
-		} `json:"expiryDateTime"`
 	} `json:"statusMessage"`
 }
 
@@ -193,10 +186,6 @@ func SetStatusMessage(key string, message string, expireDate string) error {
 		return fmt.Errorf("error getting user ID: %w", err)
 	}
 
-	//print user id value
-	fmt.Println("User ID:")
-	fmt.Println(userID)
-
 	// Create post body
 	postBody := StatusRequestBody{
 		StatusMessage: struct {
@@ -204,10 +193,6 @@ func SetStatusMessage(key string, message string, expireDate string) error {
 				Content     string `json:"content"`
 				ContentType string `json:"contentType"`
 			} `json:"message"`
-			ExpiryDateTime struct {
-				DateTime string `json:"dateTime"`
-				TimeZone string `json:"timeZone"`
-			} `json:"expiryDateTime"`
 		}{
 			Message: struct {
 				Content     string `json:"content"`
@@ -216,32 +201,18 @@ func SetStatusMessage(key string, message string, expireDate string) error {
 				Content:     message,
 				ContentType: "text", // Assuming the ContentType is HTML, adjust as necessary
 			},
-			ExpiryDateTime: struct {
-				DateTime string `json:"dateTime"`
-				TimeZone string `json:"timeZone"`
-			}{
-				DateTime: expireDate,
-				TimeZone: "UTC", // Assuming UTC, adjust as necessary
-			},
 		},
 	}
 
 	// Convert post body to json
 	postBodyJSON, err := json.Marshal(postBody)
-
-	//print post body json
-	fmt.Println("Post Body JSON:")
-	fmt.Println(string(postBodyJSON))
 	if err != nil {
 		return fmt.Errorf("error marshaling post body to JSON: %w", err)
 	}
 
 	// Create a new HTTP request with the JSON body
-	endpoint := "https://graph.microsoft.com/v1.0/users/" + userID + "/presence"
-	//check endpoint
-	fmt.Println("Endpoint:")
-	fmt.Println(endpoint)
-	req, err := http.NewRequest("POST", "https://graph.microsoft.com/v1.0/users/"+userID+"/presence/setStatusMessage", bytes.NewBuffer(postBodyJSON))
+	endpoint := "https://graph.microsoft.com/v1.0/users/" + userID + "/presence/setStatusMessage"
+	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(postBodyJSON))
 	if err != nil {
 		return fmt.Errorf("error creating request with JSON body: %w", err)
 	}
