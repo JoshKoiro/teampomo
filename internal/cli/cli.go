@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/JoshKoiro/teampomo/internal/loadkey"
+	"github.com/JoshKoiro/teampomo/internal/prettytime"
 	"github.com/JoshKoiro/teampomo/internal/teamsapi"
 	"github.com/JoshKoiro/teampomo/internal/timer"
 	"github.com/fatih/color"
@@ -58,10 +59,20 @@ var StartCmd = &cobra.Command{
 			c.Printf("Starting a new Pomodoro session for %d minutes...\n", duration/60)
 			endTime = time.Now().Add(time.Duration(duration) * time.Second).UTC().Format("2006-01-02T15:04:05.999Z")
 
+			// get pretty versions of time
+			startTimePretty, error := prettytime.PrettyValue(startTime)
+			if error != nil {
+				fmt.Println(error)
+			}
+			endTimePretty, error := prettytime.PrettyValue(endTime)
+			if error != nil {
+				fmt.Println(error)
+			}
+
 			// print start time
-			c.Printf("Start time: %s\n", startTime)
+			c.Printf("Start time: %s\n", startTimePretty)
 			// print end time
-			c.Printf("End time: %s\n", endTime)
+			c.Printf("End time: %s\n", endTimePretty)
 
 			// create calendar event
 			teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
