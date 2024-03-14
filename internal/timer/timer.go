@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/JoshKoiro/teampomo/internal/teamsapi"
 	"github.com/fatih/color"
 )
 
@@ -43,5 +44,17 @@ func (t *Timer) Start(key string, duration int) {
 	}
 
 	// update the teams status message every minute
-	// TODO
+	for range time.Tick(time.Minute) {
+		// if duration/60 is 1 or less minutes, update the status message to say minute left instead of minutes left
+		if duration/60 <= 1 {
+			teamsError := teamsapi.SetStatusMessage(key, fmt.Sprintf("Pomodoro: %d minute left", duration/60), "")
+			if teamsError != nil {
+				fmt.Println(teamsError)
+			}
+		}
+		teamsError := teamsapi.SetStatusMessage(key, fmt.Sprintf("Pomodoro: %d minutes left", duration/60), "")
+		if teamsError != nil {
+			fmt.Println(teamsError)
+		}
+	}
 }
