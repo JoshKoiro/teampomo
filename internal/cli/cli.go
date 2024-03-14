@@ -87,10 +87,10 @@ var StartCmd = &cobra.Command{
 		// COMMENTED THIS OUT FOR TESTING PURPOSES....
 
 		// create calendar event
-		// teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
-		// if teamsError != nil {
-		// 	fmt.Println(teamsError)
-		// }
+		teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
+		if teamsError != nil {
+			fmt.Println(teamsError)
+		}
 
 		// END OF COMMENTING
 
@@ -98,7 +98,7 @@ var StartCmd = &cobra.Command{
 		pomodoroTimer.Start(key, duration)
 
 		//clear teams status message
-		teamsError := teamsapi.SetStatusMessage(key, "", "")
+		teamsError = teamsapi.SetStatusMessage(key, "", "")
 		if teamsError != nil {
 			fmt.Println(teamsError)
 		}
