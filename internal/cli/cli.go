@@ -58,7 +58,7 @@ var StartCmd = &cobra.Command{
 			c := color.New(color.FgHiMagenta)
 			//clear all console output
 			fmt.Print("\033[2J\033[1;1H")
-			c.Printf("Starting a new Pomodoro session (task: "+taskName+") for %d minutes...🍅\n\n", duration/60)
+			c.Printf("Starting a new Pomodoro session for %d minutes...🍅\n\n", duration/60)
 			endTime = time.Now().Add(time.Duration(duration) * time.Second).UTC().Format("2006-01-02T15:04:05.999Z")
 
 			// get pretty versions of time
