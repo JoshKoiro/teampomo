@@ -95,7 +95,7 @@ var StartCmd = &cobra.Command{
 		// COMMENTED THIS OUT FOR TESTING PURPOSES....
 
 		// Create calendar event using the task name
-		teamsError := teamsapi.CreateEvent(key, "Pomodoro: "+taskName, startTime, endTime)
+		teamsError := teamsapi.CreateEvent(key, "🍅Pomodoro: "+taskName, startTime, endTime)
 		if teamsError != nil {
 			fmt.Println(teamsError)
 		}
