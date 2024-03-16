@@ -15,21 +15,29 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var taskName string // Declare a variable to hold the task name
+
+func init() {
+	// Initialize the flag for the task name, with a default value of "Pomodoro"
+	StartCmd.Flags().StringVar(&taskName, "task", "Pomodoro", "Name of the task for the Pomodoro session")
+}
+
 var StartCmd = &cobra.Command{
 	Use:   "start [duration]",
 	Short: "Start a new Pomodoro session",
-	Long:  `Starts a new Pomodoro session with a specified duration in minutes or seconds (e.g., "25" for 25 minutes or "15sec" for 15 seconds).`,
+	Long:  `Starts a new Pomodoro session with a specified duration in minutes or seconds (e.g., "25" for 25 minutes or "15sec" for 15 seconds). Optionally specify a task name with --task.`,
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		// Parse the task name flag (already done automatically by Cobra)
 
-		// load the API key from a text file
+		// Load the API key from a text file
 		key, keyerror := loadkey.LoadKey()
 		if keyerror != nil {
 			fmt.Println("Error loading API key:", keyerror)
 		}
 		startTime := time.Now().UTC().Format("2006-01-02T15:04:05.999Z")
 		var endTime string
-		durationStr := "25"
+		durationStr := "25" // Default duration
 		if len(args) > 0 {
 			durationStr = args[0]
 		}
@@ -54,7 +62,7 @@ var StartCmd = &cobra.Command{
 				fmt.Println("Invalid duration. Please specify a valid number of minutes or seconds using the '15sec' syntax.")
 				return
 			}
-			duration *= 60 // Convert minutes to seconds for consistency
+			duration *= 60 // Convert minutes to seconds
 			c := color.New(color.FgHiMagenta)
 			//clear all console output
 			fmt.Print("\033[2J\033[1;1H")
@@ -86,8 +94,8 @@ var StartCmd = &cobra.Command{
 
 		// COMMENTED THIS OUT FOR TESTING PURPOSES....
 
-		// create calendar event
-		teamsError := teamsapi.CreateEvent(key, "Pomodoro", startTime, endTime)
+		// Create calendar event using the task name
+		teamsError := teamsapi.CreateEvent(key, taskName, startTime, endTime)
 		if teamsError != nil {
 			fmt.Println(teamsError)
 		}
