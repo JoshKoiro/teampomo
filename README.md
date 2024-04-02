@@ -5,7 +5,7 @@ A cli pomodoro timer that integrates with MS Teams to adjust status automagicall
 - CLI program that counts down a pomodoro session with customized duration.
 - Creates an event in your outlook calendar to represent the pomodoro session with the ability to name the event using the `--task` flag.
 - Updates your teams status message to state that you are in a pomodoro session and how long you have remaining.
-- Ability to show or hide what you are working on in your status message
+- Ability to show or hide what you are working on in your status message.
 
 ## Installation
 
