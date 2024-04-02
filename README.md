@@ -41,7 +41,7 @@ Please note that when specifying a duration in seconds, it will not create a cal
 
 ### --task flag
 
-You are able to note the task that you are working on for the duration of the pomodoro by using the `--task` flag with the name of the task in quotes following the flag.
+You are able to note the task that you are working on for the duration of the pomodoro by using the `--task` flag with the name of the task as a single word with no spaces, or in quotes following the flag.
 ```
 ./teampomo.exe start --task "cleaning up email"
 ```
